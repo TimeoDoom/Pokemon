@@ -9,6 +9,10 @@ export class Type {
     Type.all_types[name] = this;
   }
 
+  // Retourne une représentation textuelle du type.
+  // Les types sont regroupés par ratio d’efficacité,
+  // puis triés par ordre décroissant des ratios.
+  // Format : "Nom : ratio = [types], ..."
   toString() {
     const grouped = {};
     for (const [type, ratio] of Object.entries(this.effectiveness)) {
@@ -18,18 +22,22 @@ export class Type {
 
     const sorted = Object.keys(grouped)
       .sort((a, b) => parseFloat(b) - parseFloat(a))
-      .map((ratio) => `${ratio} = [${grouped[ratio].join(", ")}]`)
+      .map(
+        (ratio) =>
+          `${parseFloat(ratio)
+            .toFixed(3)
+            .replace(/\.?0+$/, "")} = [${grouped[ratio].join(", ")}]`,
+      )
       .join(", ");
 
     return `${this.name} : ${sorted}`;
   }
 
+  // Initialise tous les objets Type à partir de la source type_effectiveness.
+  // Chaque type est instancié puis stocké dans all_types
+  // sous forme d’objet indexé par nom.
   static fill_types() {
     Type.all_types = {};
-
-    if (typeof type_effectiveness !== "object" || type_effectiveness === null) {
-      return;
-    }
 
     for (const [name, effectiveness] of Object.entries(type_effectiveness)) {
       new Type(name, effectiveness);
