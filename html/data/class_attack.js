@@ -26,3 +26,6 @@ class Attack {
         }
     }
 }
+
+fill_attacks();
+console.log(all_attacks[345].toString());
