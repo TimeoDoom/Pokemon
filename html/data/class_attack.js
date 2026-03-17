@@ -8,9 +8,9 @@ import { charged_moves } from "./charged_moves.js";
 
 export class Attack {
 
-    // Tableau qui va stocker la totalité des attaques sous formes d'objet indexés sur l'id de l'attaque
-    
-    static all_attacks = []; 
+    // Objet qui va stocker la totalité des attaques sous formes d'objet indexés sur l'id de l'attaque
+
+    static all_attacks = {}; 
 
     // Constructeur de chaque attaque
 
