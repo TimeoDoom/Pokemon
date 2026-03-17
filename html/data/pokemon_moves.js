@@ -1,4 +1,4 @@
-const pokemon_moves =
+export const pokemon_moves =
     [
         {
             "charged_moves": [

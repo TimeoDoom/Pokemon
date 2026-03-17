@@ -1,4 +1,4 @@
-const charged_moves =
+export const charged_moves =
     [
         {
             "critical_chance": 0.05,
