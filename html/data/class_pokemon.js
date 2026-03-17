@@ -20,7 +20,10 @@ class Pokemon {
 
     }
 
+    // Fonction getAttacks() renvoyant la liste des objets Attack (cf. class_attack.js) attribués à un Pokémon
+
     getAttacks() {
+        all_attacks = [];
         
     }
 }
