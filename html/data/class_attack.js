@@ -4,7 +4,7 @@ import "charged_moves.js";
 
 class Attack {
 
-    all_attacks = [];
+    static all_attacks = [];
 
     constructor(id, name, type, power, delay) {
         this.id = id;
