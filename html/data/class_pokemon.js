@@ -29,13 +29,8 @@ export class Pokemon {
   getAttacks() {
     let attacks = [];
 
-<<<<<<< HEAD
-    getAttacks() {
-      
-=======
     for (let move of this.attacks.fast) {
       attacks.push(Attack.all_attacks[move]);
->>>>>>> 270c080 (Refactor getTypes and getAttacks methods for improved clarity and consistency)
     }
 
     for (let move of this.attacks.charged) {
