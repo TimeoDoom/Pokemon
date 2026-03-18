@@ -26,7 +26,7 @@ export class Type {
         (ratio) =>
           `${parseFloat(ratio)
             .toFixed(3)
-            .replace(/\.?0+$/, "")} = [${grouped[ratio].join(", ")}]`,
+            .replace(/\.?0+$/, "")} = [${grouped[ratio].sort().join(", ")}]`,
       )
       .join(", ");
 
