@@ -10,7 +10,7 @@ export class Attack {
 
     // Objet qui va stocker la totalité des attaques sous formes d'objet indexés sur l'id de l'attaque
 
-    static all_attacks = {}; 
+    static all_attacks = {};
 
     // Constructeur de chaque attaque
 
@@ -46,5 +46,7 @@ export class Attack {
             attk = new Attack(attack["move_id"], attack["name"], attack["type"], attack["power"], attack["duration"]);
             this.all_attacks[attack["move_id"]] = attk;
         }
+
+        return this.all_attacks;
     }
 }
