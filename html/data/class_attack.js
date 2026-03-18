@@ -18,24 +18,46 @@ export class Attack {
     return `${this.name} : #${this.id}, ${this.type}, ${this.power}, ${this.duration}ms`;
   }
 
+  static all_attacks = {};
+
   static fill_attacks() {
-    // Réinitialise le cache avant de le reconstruire.
-    Attack.all_attacks = {};
+    this.all_attacks = {};
 
-    // Regroupe toutes les sources d'attaques dans une seule collection.
-    const all = [...fast_moves, ...charged_moves, ...pokemon_moves];
+    let attk;
 
-    for (let attack of all) {
-      const attk = new Attack(
+    // fast
+    for (let attack of fast_moves) {
+      attk = new Attack(
         attack["move_id"],
         attack["name"],
         attack["type"],
         attack["power"],
         attack["duration"],
       );
+      this.all_attacks[attack["move_id"]] = attk;
+    }
 
-      // Stocke l'attaque par son identifiant pour un accès direct.
-      Attack.all_attacks[attack["move_id"]] = attk;
+    // charged
+    for (let attack of charged_moves) {
+      attk = new Attack(
+        attack["move_id"],
+        attack["name"],
+        attack["type"],
+        attack["power"],
+        attack["duration"],
+      );
+      this.all_attacks[attack["move_id"]] = attk;
+    }
+
+    for (let attack of pokemon_moves) {
+      attk = new Attack(
+        attack["move_id"],
+        attack["name"],
+        attack["type"],
+        attack["power"],
+        attack["duration"],
+      );
+      this.all_attacks[attack["move_id"]] = attk;
     }
   }
 }
