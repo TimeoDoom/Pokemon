@@ -81,4 +81,12 @@ export class Pokemon {
     console.log(res);
     return res;
   }
+
+  static sortPokemonByTypeThenName() {
+    const res = Object.values(Pokemon.all_pokemons.sort(function (a, b) {
+      return a.type.localeCompare(b.type) || b.name - a.name;
+    }));
+    console.log(res);
+    return res;
+  }
 }
