@@ -1,5 +1,6 @@
 import { Type } from "./class_type.js";
 import { Attack } from "./class_attack.js";
+import { pokemon_data } from "./pokemons.js";
 
 export class Pokemon {
   static all_pokemons = {};
@@ -57,7 +58,7 @@ export class Pokemon {
     return [...this.attacks.fast, ...this.attacks.charged];
   }
 
-  static fill_pokemons(pokemon_data) {
+  static fill_pokemons() {
     Pokemon.all_pokemons = {};
 
     for (let pokemon of pokemon_data) {
