@@ -119,9 +119,40 @@ export class Pokemon {
     }
   }
 
+  static getPokemonsByType(typeName) {
+    const result = [];
+
+    if (!typeName) {
+      console.log("Aucun type fourni.");
+      return result;
+    }
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const types = pokemon.getTypes();
+
+      if (
+        types.some((t) => t && t.name.toLowerCase() === typeName.toLowerCase())
+      ) {
+        result.push(pokemon);
+      }
+    }
+
+    console.log(`Pokemons de type ${typeName} (${result.length}) :`);
+    result.forEach((pokemon) => {
+      console.log(`- ${pokemon.name}`);
+    });
+
+    return result;
+  }
+
   static getPokemonsByAttack(attackName) {
     const result = [];
     const attack = Attack.getAttackByName(attackName);
+
+    if (!attack) {
+      console.log(`Aucune attaque trouvée pour '${attackName}'.`);
+      return result;
+    }
 
     for (const pokemon of Object.values(Pokemon.all_pokemons)) {
       const allAttacks = pokemon.getAttacks();
@@ -131,21 +162,33 @@ export class Pokemon {
       }
     }
 
+    console.log(`Pokemons avec l'attaque ${attackName} (${result.length}) :`);
+    result.forEach((pokemon) => {
+      console.log(`- ${pokemon.name}`);
+    });
+
     return result;
   }
 
-  static getPokemonsByType(typeName) {
+  static getAttacksByType(typeName) {
     const result = [];
+    const type = Type.all_types[typeName];
 
-    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
-      const types = pokemon.getTypes();
+    if (!type) {
+      console.log(`Aucun type trouvé pour '${typeName}'.`);
+      return result;
+    }
 
-      if (types.some((t) => t.name.toLowerCase() === typeName.toLowerCase())) {
-        result.push(pokemon);
+    for (const attack of Object.values(Attack.all_attacks)) {
+      if (attack.type === type.name) {
+        result.push(attack);
       }
     }
 
-    return result;
+    console.log(`Attaques de type ${typeName} (${result.lenght})`);
+    result.forEach((attack) => {
+      console.log(`- ${attack.name}`);
+    });
   }
 
   static sortPokemonByTypeThenName() {
@@ -156,5 +199,39 @@ export class Pokemon {
     );
     console.log(res);
     return res;
+  }
+
+  static getWeakestEnemies(attackName) {
+    const result = [];
+    const attack = Attack.getAttackByName(attackName);
+
+    if (!attack) {
+      console.log(`Aucune attaque trouvée pour '${attackName}`);
+      return result;
+    }
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const allAttacks = pokemon.getAttacks();
+
+      if (allAttacks.some((a) => a && a.id === attack.id)) {
+        const types = pokemon.getTypes();
+        const effectiveness = types.reduce((acc, t) => {
+          const eff = Type.all_types[attack.type].effectiveness[t.name] || 1;
+          return acc * eff;
+        }, 1);
+
+        result.push({ pokemon, effectiveness });
+      }
+    }
+
+    console.log(`Pokemons les plus faibles contre ${attackName} :`);
+    result
+      .sort((a, b) => a.effectiveness - b.effectiveness)
+      .slice(0, 5)
+      .forEach(({ pokemon, effectiveness }) => {
+        console.log(`- ${pokemon.name} (efficacité: ${effectiveness})`);
+      });
+
+    return result.slice(0, 5);
   }
 }
