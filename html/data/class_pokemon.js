@@ -136,26 +136,18 @@ export class Pokemon {
     return result;
   }
 
-  // static getPokemonsByType(typeName) {
-  //   const result = [];
-  //   const normalizedTypeName = typeName.toLowerCase();
+  static getPokemonsByType(typeName) {
+    const result = [];
+    const normalizedTypeName = typeName.toLowerCase();
 
-  //   for (const pokemon of Object.values(Pokemon.all_pokemons)) {
-  //     const types = pokemon.getTypes();
-  //     if (types.some(t => t.name.toLowerCase() === normalizedTypeName)) {
-  //       result.push(pokemon);
-  //     }
-  //   }
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const types = pokemon.getTypes();
+      if (types.some(t => t.name.toLowerCase() === normalizedTypeName)) {
+        result.push(pokemon);
+      }
+    }
 
-  //   return result;
-  // }
-
-  static getPokemonByType(typeName) {
-    const res = Object.values(Pokemon.all_pokemons).filter((pokemon) =>
-      pokemon.types.some((t) => t.name === typeName.toLowerCase()),
-    );
-    console.log(res);
-    return res;
+    return result;
   }
 
   static sortPokemonByTypeThenName() {

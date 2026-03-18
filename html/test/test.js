@@ -47,7 +47,7 @@ function getAttacksByType(typeName) {
   return attacks;
 }
 
-getPokemonsByType("Fire");
+getPokemonsByType("Grass");
 console.log("\n" + "-".repeat(60) + "\n");
 
 getPokemonsByAttack("Tackle");
