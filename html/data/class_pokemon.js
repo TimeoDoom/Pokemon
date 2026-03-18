@@ -9,11 +9,11 @@ export class Pokemon {
     this.id = id;
     this.name = name;
 
-    this.types = types.map((t) => Type.all_types[t]);
+    this.types = (types || []).map((t) => Type.all_types[t]);
 
     this.attacks = {
-      fast: attacks.fast.map((id) => Attack.all_attacks[id]),
-      charged: attacks.charged.map((id) => Attack.all_attacks[id]),
+      fast: (attacks?.fast || []).map((id) => Attack.all_attacks[id]),
+      charged: (attacks?.charged || []).map((id) => Attack.all_attacks[id]),
     };
 
     this.stats = {
@@ -63,12 +63,12 @@ export class Pokemon {
     }
   }
 
-  getPokemonsByAttack(attackName) {
+  static getPokemonsByAttack(attackName) {
     const result = [];
 
     for (const pokemon of Object.values(Pokemon.all_pokemons)) {
       const allAttacks = pokemon.getAttacks();
-      
+
       if (allAttacks.some((a) => a.name === attackName)) {
         result.push(pokemon);
       }
@@ -77,6 +77,8 @@ export class Pokemon {
   }
 
   getPokemonByType(typaName) {
-    console.log(all_pokemons.filter((pokemon) => pokemon.types.includes(typaName)));
+    console.log(
+      all_pokemons.filter((pokemon) => pokemon.types.includes(typaName)),
+    );
   }
 }
