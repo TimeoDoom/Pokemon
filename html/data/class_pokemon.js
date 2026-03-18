@@ -76,8 +76,8 @@ export class Pokemon {
     return result;
   }
 
-  getPokemonByType(typaName) {
-    res = Pokemon.all_pokemons.filter((pokemon) => pokemon.types.includes(typaName));
+  static getPokemonByType(typeName) {
+    const res = Object.values(Pokemon.all_pokemons).filter((pokemon) => pokemon.types.some((t) => t.name === typeName));
     console.log(res);
     return res;
   }

@@ -9,5 +9,5 @@ Pokemon.fill_pokemons();
 console.log(Type.all_types["Bug"].toString());
 console.log(Attack.all_attacks[345].toString());
 
-console.log(Pokemon.getPokemonNamesByType("Grass"));
+Pokemon.getPokemonByType("Grass");
 console.log(Pokemon.getPokemonNamesByAttack("Vine Whip"));
