@@ -1,5 +1,6 @@
 import { Type } from "./class_type.js";
 import { Attack } from "./class_attack.js";
+import { pokemon_data } from "./pokemons.js";
 
 export class Pokemon {
   static all_pokemons = {};
@@ -40,6 +41,7 @@ export class Pokemon {
     return this.types;
   }
 
+<<<<<<< HEAD
   // Fonction getAttacks() renvoyant la liste des objets Attack (cf. class_attack.js) attribués à un Pokémon
 
   getAttacks() {
@@ -53,11 +55,13 @@ export class Pokemon {
     tabType.filter((type) => type == typeName);
   }
 
+=======
+>>>>>>> 6e766bcd3636df69ce8fcbcc5b25a031eea882bb
   getAttacks() {
     return [...this.attacks.fast, ...this.attacks.charged];
   }
 
-  static fill_pokemons(pokemon_data) {
+  static fill_pokemons() {
     Pokemon.all_pokemons = {};
 
     for (let pokemon of pokemon_data) {
