@@ -123,8 +123,6 @@ export class Pokemon {
     const result = [];
     const attack = Attack.getAttackByName(attackName);
 
-    if (!attack) return result;
-
     for (const pokemon of Object.values(Pokemon.all_pokemons)) {
       const allAttacks = pokemon.getAttacks();
 
@@ -136,26 +134,18 @@ export class Pokemon {
     return result;
   }
 
-  // static getPokemonsByType(typeName) {
-  //   const result = [];
-  //   const normalizedTypeName = typeName.toLowerCase();
+  static getPokemonsByType(typeName) {
+    const result = [];
 
-  //   for (const pokemon of Object.values(Pokemon.all_pokemons)) {
-  //     const types = pokemon.getTypes();
-  //     if (types.some(t => t.name.toLowerCase() === normalizedTypeName)) {
-  //       result.push(pokemon);
-  //     }
-  //   }
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const types = pokemon.getTypes();
 
-  //   return result;
-  // }
+      if (types.some((t) => t.name.toLowerCase() === typeName.toLowerCase())) {
+        result.push(pokemon);
+      }
+    }
 
-  static getPokemonByType(typeName) {
-    const res = Object.values(Pokemon.all_pokemons).filter((pokemon) =>
-      pokemon.types.some((t) => t.name === typeName.toLowerCase()),
-    );
-    console.log(res);
-    return res;
+    return result;
   }
 
   static sortPokemonByTypeThenName() {
