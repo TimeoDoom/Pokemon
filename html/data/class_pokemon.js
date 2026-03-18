@@ -17,11 +17,42 @@ export class Pokemon {
   }
 
   getTypes() {
+    let types = [];
+
+    for (let type of this.types) {
+      types.push(Type.all_types[type]);
+    }
+
+    return types;
   }
 
-    // Fonction getAttacks() renvoyant la liste des objets Attack (cf. class_attack.js) attribués à un Pokémon
+  getAttacks() {
+    let attacks = [];
 
+<<<<<<< HEAD
     getAttacks() {
       
+=======
+    for (let move of this.attacks.fast) {
+      attacks.push(Attack.all_attacks[move]);
+>>>>>>> 270c080 (Refactor getTypes and getAttacks methods for improved clarity and consistency)
     }
+
+    for (let move of this.attacks.charged) {
+      attacks.push(Attack.all_attacks[move]);
+    }
+
+    return attacks;
+  }
+
+  static fill_pokemons(pokemon_data) {
+    for (let pokemon of pokemon_data) {
+      new Pokemon(
+        pokemon["id"],
+        pokemon["name"],
+        pokemon["type"],
+        pokemon["attacks"],
+      );
+    }
+  }
 }
