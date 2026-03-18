@@ -47,7 +47,7 @@ export class Pokemon {
   getAttacks() {
     return [...this.attacks.fast, ...this.attacks.charged];
   }
-  
+
   static fill_pokemons() {
     Pokemon.all_pokemons = {};
 
@@ -149,4 +149,22 @@ export class Pokemon {
 
   //   return result;
   // }
+
+  static getPokemonByType(typeName) {
+    const res = Object.values(Pokemon.all_pokemons).filter((pokemon) =>
+      pokemon.types.some((t) => t.name === typeName.toLowerCase()),
+    );
+    console.log(res);
+    return res;
+  }
+
+  static sortPokemonByTypeThenName() {
+    const res = Object.values(
+      Pokemon.all_pokemons.sort(function (a, b) {
+        return a.type.localeCompare(b.type) || b.name - a.name;
+      }),
+    );
+    console.log(res);
+    return res;
+  }
 }
