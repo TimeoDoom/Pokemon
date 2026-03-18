@@ -63,6 +63,19 @@ export class Pokemon {
     }
   }
 
+  getPokemonsByAttack(attackName) {
+    const result = [];
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const allAttacks = pokemon.getAttacks();
+      
+      if (allAttacks.some((a) => a.name === attackName)) {
+        result.push(pokemon);
+      }
+    }
+    return result;
+  }
+
   getPokemonByType(typaName) {
     console.log(Pokemon.all_pokemons.filter((pokemon) => pokemon.types.includes(typaName)));
   }
