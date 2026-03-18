@@ -41,19 +41,6 @@ export class Pokemon {
     return this.types;
   }
 
-  // Fonction getAttacks() renvoyant la liste des objets Attack (cf. class_attack.js) attribués à un Pokémon
-
-  getAttacks() {
-
-  }
-
-  // Fonction getPokemonsByType() affichant la liste des objets Pokemon (cf. class_pokemon.js) possédant ce type
-
-  getPokemonsByType(typeName) {
-    tabType = fill_types();
-    tabType.filter((type) => type == typeName);
-  }
-
   getAttacks() {
     return [...this.attacks.fast, ...this.attacks.charged];
   }
