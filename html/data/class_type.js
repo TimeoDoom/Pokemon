@@ -42,5 +42,7 @@ export class Type {
     for (const [name, effectiveness] of Object.entries(type_effectiveness)) {
       new Type(name, effectiveness);
     }
+
+    return this.all_types;
   }
 }
