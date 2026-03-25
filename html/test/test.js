@@ -96,15 +96,26 @@ function sortPokemonByTypeThenName() {
     return result;
 }
 
+function fastFight(pokemonNameA, pokemonNameB) {
+  
+
+  return x;
+}
 
 // Q1. Fonction getPokemonsByType(typeName)
 console.log(getPokemonsByType("Grass"));
+console.log("\n" + "-".repeat(60) + "\n");
 
 // Q2. Fonction getPokemonsByAttack(attackName)
-getPokemonsByAttack("Tackle");
+console.log(getPokemonsByAttack("Tackle"));
+console.log("\n" + "-".repeat(60) + "\n");
 
 // Q3. Fonction getAttacksByType(typeName)
-getAttacksByType("Fire");
+console.log(getAttacksByType("Fire"));
+console.log("\n" + "-".repeat(60) + "\n");
+
+// Q4. Fonction sortPokemonByTypeThenName()
+console.log(sortPokemonByTypeThenName());
 
 // Q5. Fonction getWeakestEnemies(attackName)
 Pokemon.getWeakestEnemies("Vine Whip");
@@ -112,15 +123,6 @@ Pokemon.getWeakestEnemies("Vine Whip");
 // Q6. Fonction getBestFastAttacksForEnemy(print, pokemonName)
 let print = true;
 Pokemon.getBestFastAttacksForEnemy(print, "Bulbasaur");
-displayList(`attaques de type ${typeName}`, attacks);
 
-Pokemon.getPokemonsByType("Grass");
-console.log("\n" + "-".repeat(60) + "\n");
+// Q7. Fonction fastFight(pokemonNameA, pokemonNameB)
 
-Pokemon.getPokemonsByAttack("Tackle");
-console.log("\n" + "-".repeat(60) + "\n");
-
-Pokemon.getAttacksByType("Water");
-console.log("\n" + "-".repeat(60) + "\n");
-
-console.log(sortPokemonByTypeThenName());
