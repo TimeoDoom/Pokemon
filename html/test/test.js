@@ -18,4 +18,6 @@ Pokemon.getAttacksByType("Fire");
 // Q5. Fonction getWeakestEnemies(attackName)
 Pokemon.getWeakestEnemies("Vine Whip");
 
-// 
+// Q6. Fonction getBestFastAttacksForEnemy(print, pokemonName)
+let print = true;
+Pokemon.getBestFastAttacksForEnemy(print, "Bulbasaur");
