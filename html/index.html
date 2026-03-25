@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
+    <title>Document</title>  </head>
   <body>
-    <table>
+    <table id="pokeTable">
       <thead>
         <tr>
           <td>identifiant</td>
@@ -19,11 +18,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr></tr>
+        <!-- Chargement des infos dans le JS -->
       </tbody>
     </table>
+    <div id="pagination">
+        <button>PRÉC</button>
+        <span></span>
+        <button>SUIV</button>
+    </div>
 
-    <script src="../js/jquery-3.7.1.min.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script type="module" src="./js/script.js"></script>
   </body>
 </html>

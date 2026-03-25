@@ -7,9 +7,10 @@ import { pokemon_types } from "./pokemon_types.js";
 export class Pokemon {
   static all_pokemons = {};
 
-  constructor(id, name, types, attacks, stats) {
+  constructor(id, name, types, attacks, stats, generation) {
     this.id = id;
     this.name = name;
+    this.generation = generation;
 
     this.types = (types || []).map((t) => Type.all_types[t]);
 
@@ -115,6 +116,7 @@ export class Pokemon {
           atk: pokemon.base_attack,
           def: pokemon.base_defense,
         },
+        pokemon.generation,
       );
     }
   }
@@ -201,8 +203,14 @@ export class Pokemon {
 
   static sortPokemonByTypeThenName() {
     const result = Object.values(Pokemon.all_pokemons).sort((a, b) => {
-      const aTypes = a.getTypes().map((t) => t.name.toLowerCase()).join(", ");
-      const bTypes = b.getTypes().map((t) => t.name.toLowerCase()).join(", ");
+      const aTypes = a
+        .getTypes()
+        .map((t) => t.name.toLowerCase())
+        .join(", ");
+      const bTypes = b
+        .getTypes()
+        .map((t) => t.name.toLowerCase())
+        .join(", ");
 
       if (aTypes < bTypes) return -1;
       if (aTypes > bTypes) return 1;
@@ -217,8 +225,7 @@ export class Pokemon {
     return result;
   }
 
-  // Question 5
-
+  // Question 5 methode de classe
   static getWeakestEnemies(attackName) {
     const result = [];
     const attack = Attack.getAttackByName(attackName);
@@ -253,7 +260,7 @@ export class Pokemon {
     return result.slice(0, 5);
   }
 
-  // Question 6
+  // Question 6 methode d'instance
   static getBestFastAttacksForEnemy(print, pokemonName) {
     // Trouver le Pokémon cible
     const tPokemon = Object.values(Pokemon.all_pokemons).find(
@@ -287,8 +294,8 @@ export class Pokemon {
       );
 
       if (pokemonsWithAttack.length === 0) {
-        continue
-      };
+        continue;
+      }
 
       // Calculer les dégâts moyens
       let totalDamage = 0;
