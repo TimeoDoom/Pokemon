@@ -21,3 +21,17 @@ Pokemon.getWeakestEnemies("Vine Whip");
 // Q6. Fonction getBestFastAttacksForEnemy(print, pokemonName)
 let print = true;
 Pokemon.getBestFastAttacksForEnemy(print, "Bulbasaur");
+displayList(`attaques de type ${typeName}`, attacks);
+
+return attacks;
+
+getPokemonsByType("Grass");
+console.log("\n" + "-".repeat(60) + "\n");
+
+getPokemonsByAttack("Tackle");
+console.log("\n" + "-".repeat(60) + "\n");
+
+getAttacksByType("Water");
+console.log("\n" + "-".repeat(60) + "\n");
+
+console.log(Pokemon.sortPokemonByTypeThenName());

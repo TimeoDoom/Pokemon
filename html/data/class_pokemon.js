@@ -200,13 +200,21 @@ export class Pokemon {
   // Question 4
 
   static sortPokemonByTypeThenName() {
-    const res = Object.values(
-      Pokemon.all_pokemons.sort(function (a, b) {
-        return a.type.localeCompare(b.type) || b.name - a.name;
-      }),
-    );
-    console.log(res);
-    return res;
+    const result = Object.values(Pokemon.all_pokemons).sort((a, b) => {
+      const aTypes = a.getTypes().map((t) => t.name.toLowerCase()).join(", ");
+      const bTypes = b.getTypes().map((t) => t.name.toLowerCase()).join(", ");
+
+      if (aTypes < bTypes) return -1;
+      if (aTypes > bTypes) return 1;
+
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+
+      if (aName < bName) return -1;
+      if (aName > bName) return 1;
+      return 0;
+    });
+    return result;
   }
 
   // Question 5
