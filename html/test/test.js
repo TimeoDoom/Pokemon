@@ -55,3 +55,5 @@ console.log("\n" + "-".repeat(60) + "\n");
 
 getAttacksByType("Water");
 console.log("\n" + "-".repeat(60) + "\n");
+
+console.log(Pokemon.sortPokemonByTypeThenName());
