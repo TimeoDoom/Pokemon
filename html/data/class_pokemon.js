@@ -119,6 +119,106 @@ export class Pokemon {
     }
   }
 
+  // Question 1
+
+  static getPokemonsByType(typeName) {
+    const result = [];
+
+    if (!typeName) {
+      console.log("Aucun type fourni.");
+      return result;
+    }
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const types = pokemon.getTypes();
+
+      if (
+        types.some((t) => t && t.name.toLowerCase() === typeName.toLowerCase())
+      ) {
+        result.push(pokemon);
+      }
+    }
+
+    console.log(`Pokemons de type ${typeName} (${result.length}) :`);
+    result.forEach((pokemon) => {
+      console.log(`- ${pokemon.name}`);
+    });
+
+    return result;
+  }
+
+  // Question 2
+
+  static getPokemonsByAttack(attackName) {
+    const result = [];
+    const attack = Attack.getAttackByName(attackName);
+
+    if (!attack) {
+      console.log(`Aucune attaque trouvée pour '${attackName}'.`);
+      return result;
+    }
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const allAttacks = pokemon.getAttacks();
+
+      if (allAttacks.some((a) => a && a.id === attack.id)) {
+        result.push(pokemon);
+      }
+    }
+
+    console.log(`Pokemons avec l'attaque ${attackName} (${result.length}) :`);
+    result.forEach((pokemon) => {
+      console.log(`- ${pokemon.name}`);
+    });
+
+    return result;
+  }
+
+  // Question 3
+
+  static getAttacksByType(typeName) {
+    const result = [];
+    const type = Type.all_types[typeName];
+
+    if (!type) {
+      console.log(`Aucun type trouvé pour '${typeName}'.`);
+      return result;
+    }
+
+    for (const attack of Object.values(Attack.all_attacks)) {
+      if (attack.type === type.name) {
+        result.push(attack);
+      }
+    }
+
+    console.log(`Attaques de type ${typeName} (${result.lenght})`);
+    result.forEach((attack) => {
+      console.log(`- ${attack.name}`);
+    });
+  }
+
+  // Question 4
+
+  static sortPokemonByTypeThenName() {
+    const result = Object.values(Pokemon.all_pokemons).sort((a, b) => {
+      const aTypes = a.getTypes().map((t) => t.name.toLowerCase()).join(", ");
+      const bTypes = b.getTypes().map((t) => t.name.toLowerCase()).join(", ");
+
+      if (aTypes < bTypes) return -1;
+      if (aTypes > bTypes) return 1;
+
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+
+      if (aName < bName) return -1;
+      if (aName > bName) return 1;
+      return 0;
+    });
+    return result;
+  }
+
+  // Question 5
+
   static getWeakestEnemies(attackName) {
     const result = [];
     const attack = Attack.getAttackByName(attackName);
@@ -151,5 +251,96 @@ export class Pokemon {
       });
 
     return result.slice(0, 5);
+  }
+
+  // Question 6
+  static getBestFastAttacksForEnemy(print, pokemonName) {
+    // Trouver le Pokémon cible
+    const tPokemon = Object.values(Pokemon.all_pokemons).find(
+      (p) => p.name.toLowerCase() === pokemonName.toLowerCase(),
+    );
+
+    if (!tPokemon) {
+      if (print) {
+        console.log(`Aucun Pokémon trouvé pour '${pokemonName}'.`);
+      }
+      return null;
+    }
+
+    // Collecter toutes les attaques rapides uniques avec leurs dégâts
+    const fastAttacksData = [];
+    const fastAttacksMap = new Map();
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      for (const attack of pokemon.attacks.fast) {
+        if (attack && !fastAttacksMap.has(attack.id)) {
+          fastAttacksMap.set(attack.id, attack);
+        }
+      }
+    }
+
+    // Pour chaque attaque rapide unique
+    for (const attack of fastAttacksMap.values()) {
+      // Trouver tous les Pokémons avec cette attaque
+      const pokemonsWithAttack = Object.values(Pokemon.all_pokemons).filter(
+        (p) => p.attacks.fast.some((a) => a && a.id === attack.id),
+      );
+
+      if (pokemonsWithAttack.length === 0) {
+        continue
+      };
+
+      // Calculer les dégâts moyens
+      let totalDamage = 0;
+      let totalEffectiveness = 0;
+
+      for (const attacker of pokemonsWithAttack) {
+        // Récupérer l'efficacité de l'attaque contre la cible
+        const effectiveness = tPokemon.types.reduce((acc, t) => {
+          const eff = Type.all_types[attack.type].effectiveness[t.name] || 1;
+          return acc * eff;
+        }, 1);
+
+        // Calculer les dégâts: Puissance × Efficacité × (ATK attaquant / DEF cible)
+        const damage =
+          attack.power *
+          effectiveness *
+          (attacker.stats.atk / tPokemon.stats.def);
+        totalDamage += damage;
+        totalEffectiveness += effectiveness;
+      }
+
+      const averageDamage = totalDamage / pokemonsWithAttack.length;
+      const averageEffectiveness =
+        totalEffectiveness / pokemonsWithAttack.length;
+
+      fastAttacksData.push({
+        atk: attack,
+        pts: averageDamage,
+        eff: averageEffectiveness,
+      });
+    }
+
+    // Trier par dégâts (descending), puis par nom alphabétique
+    fastAttacksData.sort((a, b) => {
+      if (b.pts !== a.pts) {
+        return b.pts - a.pts;
+      }
+      return a.atk.name.localeCompare(b.atk.name);
+    });
+
+    const best = fastAttacksData[0];
+
+    if (print && best) {
+      console.log(
+        `\nMeilleure attaque rapide contre ${tPokemon.name} (DEF: ${tPokemon.stats.def}):`,
+      );
+      console.log(`- ${best.atk.toString()}`);
+      console.log(
+        `  Dégâts: ${best.pts.toFixed(2)}, Efficacité: ${best.eff.toFixed(2)}`,
+      );
+    }
+
+    return best || null;
   }
 }

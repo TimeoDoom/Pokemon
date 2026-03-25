@@ -109,7 +109,10 @@ getAttacksByType("Fire");
 // Q5. Fonction getWeakestEnemies(attackName)
 Pokemon.getWeakestEnemies("Vine Whip");
 
-// Pokemon.displayList(`attaques de type ${typeName}`, attacks);
+// Q6. Fonction getBestFastAttacksForEnemy(print, pokemonName)
+let print = true;
+Pokemon.getBestFastAttacksForEnemy(print, "Bulbasaur");
+displayList(`attaques de type ${typeName}`, attacks);
 
 Pokemon.getPokemonsByType("Grass");
 console.log("\n" + "-".repeat(60) + "\n");
