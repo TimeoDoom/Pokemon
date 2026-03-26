@@ -337,6 +337,7 @@ export class Pokemon {
         totalEffectiveness / pokemonsWithAttack.length;
 
       fastAttacksData.push({
+        name: attack.name,
         atk: attack,
         pts: averageDamage,
         eff: averageEffectiveness,
