@@ -29,6 +29,18 @@ export class Pokemon {
     Pokemon.all_pokemons[id] = this;
   }
 
+  static calculateGeneration(pokemonId) {
+    if (pokemonId <= 151) return 1;
+    if (pokemonId <= 251) return 2;
+    if (pokemonId <= 386) return 3;
+    if (pokemonId <= 493) return 4;
+    if (pokemonId <= 649) return 5;
+    if (pokemonId <= 721) return 6;
+    if (pokemonId <= 809) return 7;
+    if (pokemonId <= 905) return 8;
+    return 9;
+  }
+
   toString() {
     return `${this.name} : #${this.id}, [${this.types
       .map((t) => t.name)
@@ -105,6 +117,9 @@ export class Pokemon {
         })
         .filter((id) => id !== null);
 
+      // Calculer la génération à partir du pokemon_id
+      const generation = this.calculateGeneration(id);
+
       // Créer le Pokémon
       new Pokemon(
         id,
@@ -116,7 +131,7 @@ export class Pokemon {
           atk: pokemon.base_attack,
           def: pokemon.base_defense,
         },
-        pokemon.generation,
+        generation,
       );
     }
   }

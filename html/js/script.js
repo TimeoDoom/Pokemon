@@ -55,6 +55,7 @@ $(document).ready(function () {
   prevBtn.on("click", function () {
     if (currentPage > 1) {
       currentPage--;
+      localStorage.setItem("currentPage", currentPage);
       displayTablePage(currentPage);
     }
   });
@@ -62,9 +63,81 @@ $(document).ready(function () {
   nextBtn.on("click", function () {
     if (currentPage < totalPages) {
       currentPage++;
+      localStorage.setItem("currentPage", currentPage);
       displayTablePage(currentPage);
     }
   });
 
-  displayTablePage(1);
+  // Restaurer la page sauvegardée au chargement
+  const savedPage = parseInt(localStorage.getItem("currentPage")) || 1;
+  displayTablePage(savedPage);
+  currentPage = savedPage;
+
+  // ---------- POP UP ----------
+
+  // Events Pop-up de détails
+  const detailsPopUp = $(".overlay");
+  const pokemonImage = $(".detailsPopUp img");
+  const pokemonName = $(".detailsPopUp h2");
+  const pokemonGeneration = $(".detailsPopUp .detailsInfos #gen");
+  const pokemonTypes = $(".detailsPopUp .detailsInfos #types");
+  const pokemonAttacksPoints = $(".detailsPopUp .detailsInfos #ptsAttk");
+  const pokemonDefPoints = $(".detailsPopUp .detailsInfos #ptsDef");
+  const pokemonAttacks = $(".detailsPopUp .detailsInfos #attks");
+
+  $("#pokeTable").on("click", "tbody tr", function () {
+    const pokemonId = $(this).find("td:first").text();
+    const pokemonInfo = Object.values(Pokemon.all_pokemons).find(
+      (p) => String(p.id).padStart(3, "0") === pokemonId,
+    );
+
+    if (!pokemonInfo) {
+      console.error(`Aucun Pokémon trouvé pour l'ID ${pokemonId}`);
+      return;
+    }
+
+    pokemonImage.attr("src", `./webp/images/${pokemonId}.webp`);
+    pokemonName.text(pokemonInfo.name);
+    pokemonGeneration.text(pokemonInfo.generation);
+    pokemonTypes.text(pokemonInfo.types.map((t) => t.name).join(", "));
+    pokemonAttacksPoints.text(pokemonInfo.stats.atk);
+    pokemonDefPoints.text(pokemonInfo.stats.def);
+    pokemonAttacks.text(
+      pokemonInfo.attacks.fast
+        .filter((a) => a)
+        .map((a) => a.name)
+        .join(", "),
+    );
+
+    detailsPopUp.show();
+  });
+
+  // Fermer la pop-up en cliquant sur la croix
+  $(".detailsPopUp .close").on("click", function () {
+    detailsPopUp.hide();
+  });
+
+  // Fermer la pop-up en cliquant en dehors du contenu
+  $(window).on("click", function (event) {
+    if ($(event.target).is(detailsPopUp)) {
+      detailsPopUp.hide();
+    }
+  });
+
+  // ---------- SURVOL DES MINIATURES ----------
+
+  const imagePopUp = $("#imagePopUp");
+  const imagePopUpImg = imagePopUp.find("img");
+
+  $("#pokeTable").on("mouseenter", "tbody tr", function () {
+    const pokemonId = $(this).find("td:first").text();
+    const imgSrc = `./webp/images/${pokemonId}.webp`;
+
+    imagePopUpImg.attr("src", imgSrc);
+    imagePopUp.show();
+  });
+
+  $("#pokeTable").on("mouseleave", "tbody tr", function () {
+    imagePopUp.hide();
+  });
 });
