@@ -106,11 +106,60 @@ function sortPokemonByTypeThenName() {
   return result;
 }
 
-// Question 7
-function fastFight(pokemonNameA, pokemonNameB) {
-  return x;
+// Fonction getPokemonByName(pokemonName) qui va retourner l'objet d'un Pokémon par son nom
+function getPokemonByName(pokemonName) {
+  let result = null;
+
+  for (let pokemon of Object.values(Pokemon.all_pokemons)) {
+    if(pokemon["name"] == pokemonName) {
+      result = pokemon;
+    }
+  }
+
+  return result;
 }
 
+// Question 7
+function fastFight(pokemonNameA, pokemonNameB) {
+
+  let PokemonA = getPokemonByName(pokemonNameA);
+  let PokemonB = getPokemonByName(pokemonNameB);
+
+  if(PokemonA == null) {
+    console.log(`${pokemonNameA} introuvable !\n`);
+    return;
+  }
+
+  if(PokemonB == null) {
+    console.log(`${pokemonNameB} introuvable !\n`);
+    return;
+  }
+
+  const attkA = Pokemon.getBestFastAttacksForEnemy(false, pokemonNameA);
+  const attkB = Pokemon.getBestFastAttacksForEnemy(false, pokemonNameB);
+
+  let resteA = PokemonA.stats.def;
+  let resteB = PokemonB.stats.def;
+
+  const fight = []
+
+  while(resteA > 0 || resteB > 0) {
+    resteA = resteA - attkB.pts.toFixed(2);
+    resteB = resteB - attkA.pts.toFixed(2);
+    fight.push(
+      {Attaquant: `${pokemonNameA}`, ATK: `${PokemonA.stats.atk}`, Défenseur: `${pokemonNameB}`, DEF: `${PokemonA.stats.def}`, Nom_Attaque: `${attkB.name}`, Efficacité: `${attkB.eff.toFixed(2)}`, Dégâts: `${attkB.pts.toFixed(2)}`, Reste: `${resteA > 0 ? resteA : 0}` }
+    )
+    if(resteA > 0) {
+      fight.push(
+        {Attaquant: `${pokemonNameB}`, ATK: `${PokemonB.stats.atk}`, Défenseur: `${pokemonNameA}`, DEF: `${PokemonB.stats.def}`, Nom_Attaque: `${attkA.name}`, Efficacité: `${attkA.eff.toFixed(2)}`, Dégâts: `${attkA.pts.toFixed(2)}`, Reste: `${resteB > 0 ? resteB : 0}` }
+      )
+    }
+  }
+
+  return fight;
+}
+
+console.table(fastFight("Bulbasaur", "Charizard"));
 
 // Q1. Fonction getPokemonsByType(typeName)
 console.log(getPokemonsByType("Grass"));
