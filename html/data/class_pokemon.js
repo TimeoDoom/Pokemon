@@ -7,9 +7,10 @@ import { pokemon_types } from "./pokemon_types.js";
 export class Pokemon {
   static all_pokemons = {};
 
-  constructor(id, name, types, attacks, stats) {
+  constructor(id, name, types, attacks, stats, generation) {
     this.id = id;
     this.name = name;
+    this.generation = generation;
 
     this.types = (types || []).map((t) => Type.all_types[t]);
 
@@ -115,11 +116,116 @@ export class Pokemon {
           atk: pokemon.base_attack,
           def: pokemon.base_defense,
         },
+        pokemon.generation,
       );
     }
   }
 
-  // Question 5
+  // Question 1
+
+  static getPokemonsByType(typeName) {
+    const result = [];
+
+    if (!typeName) {
+      console.log("Aucun type fourni.");
+      return result;
+    }
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const types = pokemon.getTypes();
+
+      if (
+        types.some((t) => t && t.name.toLowerCase() === typeName.toLowerCase())
+      ) {
+        result.push(pokemon);
+      }
+    }
+
+    console.log(`Pokemons de type ${typeName} (${result.length}) :`);
+    result.forEach((pokemon) => {
+      console.log(`- ${pokemon.name}`);
+    });
+
+    return result;
+  }
+
+  // Question 2
+
+  static getPokemonsByAttack(attackName) {
+    const result = [];
+    const attack = Attack.getAttackByName(attackName);
+
+    if (!attack) {
+      console.log(`Aucune attaque trouvée pour '${attackName}'.`);
+      return result;
+    }
+
+    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
+      const allAttacks = pokemon.getAttacks();
+
+      if (allAttacks.some((a) => a && a.id === attack.id)) {
+        result.push(pokemon);
+      }
+    }
+
+    console.log(`Pokemons avec l'attaque ${attackName} (${result.length}) :`);
+    result.forEach((pokemon) => {
+      console.log(`- ${pokemon.name}`);
+    });
+
+    return result;
+  }
+
+  // Question 3
+
+  static getAttacksByType(typeName) {
+    const result = [];
+    const type = Type.all_types[typeName];
+
+    if (!type) {
+      console.log(`Aucun type trouvé pour '${typeName}'.`);
+      return result;
+    }
+
+    for (const attack of Object.values(Attack.all_attacks)) {
+      if (attack.type === type.name) {
+        result.push(attack);
+      }
+    }
+
+    console.log(`Attaques de type ${typeName} (${result.lenght})`);
+    result.forEach((attack) => {
+      console.log(`- ${attack.name}`);
+    });
+  }
+
+  // Question 4
+
+  static sortPokemonByTypeThenName() {
+    const result = Object.values(Pokemon.all_pokemons).sort((a, b) => {
+      const aTypes = a
+        .getTypes()
+        .map((t) => t.name.toLowerCase())
+        .join(", ");
+      const bTypes = b
+        .getTypes()
+        .map((t) => t.name.toLowerCase())
+        .join(", ");
+
+      if (aTypes < bTypes) return -1;
+      if (aTypes > bTypes) return 1;
+
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+
+      if (aName < bName) return -1;
+      if (aName > bName) return 1;
+      return 0;
+    });
+    return result;
+  }
+
+  // Question 5 methode de classe
   static getWeakestEnemies(attackName) {
     const result = [];
     const attack = Attack.getAttackByName(attackName);
@@ -154,7 +260,7 @@ export class Pokemon {
     return result.slice(0, 5);
   }
 
-  // Question 6
+  // Question 6 methode d'instance
   static getBestFastAttacksForEnemy(print, pokemonName) {
     // Trouver le Pokémon cible
     const tPokemon = Object.values(Pokemon.all_pokemons).find(
@@ -188,8 +294,8 @@ export class Pokemon {
       );
 
       if (pokemonsWithAttack.length === 0) {
-        continue
-      };
+        continue;
+      }
 
       // Calculer les dégâts moyens
       let totalDamage = 0;
