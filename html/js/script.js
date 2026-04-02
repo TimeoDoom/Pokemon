@@ -22,16 +22,14 @@ $(document).ready(function () {
   let nameVal = null;
   let typeVal = "all";
   let attackVal = "all";
+  let totalPages = 1;
 
   function displayTablePage(page, typeVal = "all", attackVal = "all", nameVal = "") {
     const pokemonTableBody = $("#pokeTable tbody");
     pokemonTableBody.empty();
     const elemPerPage = 25;
 
-    const start = (page - 1) * elemPerPage;
-    const end = start + elemPerPage;
-
-    let pagePokemon = allPokemon.slice(start, end).sort();
+    let pagePokemon = allPokemon.slice();
 
     // Paramétrage recherche par type
     if(typeVal != "all") {
@@ -69,7 +67,15 @@ $(document).ready(function () {
     }
 
     // Calcul du nombre de pages requises
-    const totalPages = Math.ceil(pagePokemon.length / 25);
+    totalPages = Math.ceil(pagePokemon.length / elemPerPage);
+
+    const start = (page - 1) * elemPerPage;
+    const end = start + elemPerPage;
+    pagePokemon = pagePokemon.slice(start, end);
+
+    if(totalPages == 0) {
+      console.log("Aucun éléments de trouvé");
+    }
 
     // Affichage des pokémons en liste
     pagePokemon.forEach((pokemon) => {
@@ -101,7 +107,7 @@ $(document).ready(function () {
     if (currentPage > 1) {
       currentPage--;
       localStorage.setItem("currentPage", currentPage);
-      displayTablePage(currentPage);
+      displayTablePage(currentPage, typeVal, attackVal, nameVal);
     }
   });
 
@@ -109,7 +115,7 @@ $(document).ready(function () {
     if (currentPage < totalPages) {
       currentPage++;
       localStorage.setItem("currentPage", currentPage);
-      displayTablePage(currentPage);
+      displayTablePage(currentPage, typeVal, attackVal, nameVal);
     }
   });
 
