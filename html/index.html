@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>  </head>
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
   <body>
 
     <head>
@@ -23,6 +25,11 @@
       </section>
     </head>
 
+    <div id="pagination">
+      <button>PRÉC</button>
+      <span></span>
+      <button>SUIV</button>
+    </div>
     <table id="pokeTable">
       <thead>
         <tr>
@@ -30,6 +37,7 @@
           <td>nom</td>
           <td>génération</td>
           <td>types</td>
+          <td>endurance</td>
           <td>points d'attaque de base</td>
           <td>points de défense de base</td>
           <td>image</td>
@@ -39,10 +47,35 @@
         <!-- Chargement des infos dans le JS -->
       </tbody>
     </table>
-    <div id="pagination">
-        <button>PRÉC</button>
-        <span></span>
-        <button>SUIV</button>
+
+    <div class="overlay" style="display: none">
+      <div class="detailsPopUp">
+        <div class="header">
+          <h2></h2>
+          <div class="close">
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div class="detailsContent">
+          <img src="" alt="image pokemon" />
+          <div class="detailsInfos">
+            <p>Génération : <span id="gen"></span></p>
+            <p>Types : <span id="types"></span></p>
+            <p>Points d'attaque de base : <span id="ptsAttk"></span></p>
+            <p>Points de défense de base : <span id="ptsDef"></span></p>
+            <p>Attaques : <span id="attks"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="imagePopUp" id="imagePopUp">
+      <img
+        src=""
+        alt="pokemon preview"
+        style="max-width: 300px; max-height: 300px; display: block"
+      />
     </div>
 
     <script src="./js/jquery-3.7.1.min.js"></script>

@@ -25,8 +25,19 @@ export class Pokemon {
       def: stats.def,
     };
 
-    // On ne stocke que les formes "Normal" (voir fill_pokemons)
     Pokemon.all_pokemons[id] = this;
+  }
+
+  static calculateGeneration(pokemonId) {
+    if (pokemonId <= 151) return 1;
+    if (pokemonId <= 251) return 2;
+    if (pokemonId <= 386) return 3;
+    if (pokemonId <= 493) return 4;
+    if (pokemonId <= 649) return 5;
+    if (pokemonId <= 721) return 6;
+    if (pokemonId <= 809) return 7;
+    if (pokemonId <= 905) return 8;
+    return 9;
   }
 
   toString() {
@@ -52,28 +63,21 @@ export class Pokemon {
   static fill_pokemons() {
     Pokemon.all_pokemons = {};
 
-    // Parcourir tous les pokémons
     for (let pokemon of pokemon_data) {
-      // Ne garder que les formes "Normal"
       if (pokemon.form !== "Normal") continue;
 
       const id = pokemon.pokemon_id;
-
-      // Éviter les doublons
       if (Pokemon.all_pokemons[id]) continue;
 
-      // Récupérer les types depuis pokemon_types
       const typeEntry = pokemon_types.find(
         (pt) => pt.pokemon_id === id && pt.form === "Normal",
       );
       const types = typeEntry ? typeEntry.type : [];
 
-      // Récupérer les attaques depuis pokemon_moves
       const moveEntry = pokemon_moves.find(
         (pm) => pm.pokemon_id === id && pm.form === "Normal",
       );
 
-      // Filtrer les attaques élite
       const fastMoves = moveEntry
         ? moveEntry.fast_moves.filter(
             (m) => !(moveEntry.elite_fast_moves || []).includes(m),
@@ -86,7 +90,6 @@ export class Pokemon {
           )
         : [];
 
-      // Convertir les noms en IDs
       const fastIds = fastMoves
         .map((name) => {
           const attack = Object.values(Attack.all_attacks).find(
@@ -105,7 +108,8 @@ export class Pokemon {
         })
         .filter((id) => id !== null);
 
-      // Créer le Pokémon
+      const generation = this.calculateGeneration(id);
+
       new Pokemon(
         id,
         pokemon.pokemon_name,
@@ -116,165 +120,54 @@ export class Pokemon {
           atk: pokemon.base_attack,
           def: pokemon.base_defense,
         },
-        pokemon.generation,
+        generation,
       );
     }
   }
 
-  // Question 1
-
-  static getPokemonsByType(typeName) {
-    const result = [];
-
-    if (!typeName) {
-      console.log("Aucun type fourni.");
-      return result;
-    }
-
-    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
-      const types = pokemon.getTypes();
-
-      if (
-        types.some((t) => t && t.name.toLowerCase() === typeName.toLowerCase())
-      ) {
-        result.push(pokemon);
-      }
-    }
-
-    console.log(`Pokemons de type ${typeName} (${result.length}) :`);
-    result.forEach((pokemon) => {
-      console.log(`- ${pokemon.name}`);
-    });
-
-    return result;
-  }
-
-  // Question 2
-
-  static getPokemonsByAttack(attackName) {
-    const result = [];
-    const attack = Attack.getAttackByName(attackName);
-
-    if (!attack) {
-      console.log(`Aucune attaque trouvée pour '${attackName}'.`);
-      return result;
-    }
-
-    for (const pokemon of Object.values(Pokemon.all_pokemons)) {
-      const allAttacks = pokemon.getAttacks();
-
-      if (allAttacks.some((a) => a && a.id === attack.id)) {
-        result.push(pokemon);
-      }
-    }
-
-    console.log(`Pokemons avec l'attaque ${attackName} (${result.length}) :`);
-    result.forEach((pokemon) => {
-      console.log(`- ${pokemon.name}`);
-    });
-
-    return result;
-  }
-
-  // Question 3
-
-  static getAttacksByType(typeName) {
-    const result = [];
-    const type = Type.all_types[typeName];
-
-    if (!type) {
-      console.log(`Aucun type trouvé pour '${typeName}'.`);
-      return result;
-    }
-
-    for (const attack of Object.values(Attack.all_attacks)) {
-      if (attack.type === type.name) {
-        result.push(attack);
-      }
-    }
-
-    console.log(`Attaques de type ${typeName} (${result.lenght})`);
-    result.forEach((attack) => {
-      console.log(`- ${attack.name}`);
-    });
-  }
-
-  // Question 4
-
-  static sortPokemonByTypeThenName() {
-    const result = Object.values(Pokemon.all_pokemons).sort((a, b) => {
-      const aTypes = a
-        .getTypes()
-        .map((t) => t.name.toLowerCase())
-        .join(", ");
-      const bTypes = b
-        .getTypes()
-        .map((t) => t.name.toLowerCase())
-        .join(", ");
-
-      if (aTypes < bTypes) return -1;
-      if (aTypes > bTypes) return 1;
-
-      const aName = a.name.toLowerCase();
-      const bName = b.name.toLowerCase();
-
-      if (aName < bName) return -1;
-      if (aName > bName) return 1;
-      return 0;
-    });
-    return result;
-  }
-
-  // Question 5 methode de classe
+  // ─── Q5. getWeakestEnemies(attackName) ──────────────────────────────────
   static getWeakestEnemies(attackName) {
     const result = [];
     const attack = Attack.getAttackByName(attackName);
 
     if (!attack) {
-      console.log(`Aucune attaque trouvée pour '${attackName}`);
+      console.log(`Aucune attaque trouvée pour '${attackName}'`);
       return result;
     }
 
     for (const pokemon of Object.values(Pokemon.all_pokemons)) {
-      const allAttacks = pokemon.getAttacks();
+      const types = pokemon.getTypes();
+      const effectiveness = types.reduce((acc, t) => {
+        const eff = Type.all_types[attack.type]?.effectiveness[t.name] || 1;
+        return acc * eff;
+      }, 1);
 
-      if (allAttacks.some((a) => a && a.id === attack.id)) {
-        const types = pokemon.getTypes();
-        const effectiveness = types.reduce((acc, t) => {
-          const eff = Type.all_types[attack.type].effectiveness[t.name] || 1;
-          return acc * eff;
-        }, 1);
-
-        result.push({ pokemon, effectiveness });
-      }
+      result.push({ pokemon, effectiveness });
     }
 
-    console.log(`Pokemons les plus faibles contre ${attackName} :`);
-    result
-      .sort((a, b) => a.effectiveness - b.effectiveness)
-      .slice(0, 5)
-      .forEach(({ pokemon, effectiveness }) => {
-        console.log(`- ${pokemon.name} (efficacité: ${effectiveness})`);
-      });
+    const sorted = result
+      .sort((a, b) => b.effectiveness - a.effectiveness)
+      .slice(0, 5);
 
-    return result.slice(0, 5);
+    console.log(`Pokémons les plus faibles contre ${attackName} :`);
+    sorted.forEach(({ pokemon, effectiveness }) => {
+      console.log(`- ${pokemon.toString()} (efficacité: ${effectiveness})`);
+    });
+
+    return sorted;
   }
 
-  // Question 6 methode d'instance
+  // ─── Q6. getBestFastAttacksForEnemy(print, pokemonName) ─────────────────
   static getBestFastAttacksForEnemy(print, pokemonName) {
-    // Trouver le Pokémon cible
     const tPokemon = Object.values(Pokemon.all_pokemons).find(
       (p) => p.name.toLowerCase() === pokemonName.toLowerCase(),
     );
 
     if (!tPokemon) {
-      if (print) {
-        console.log(`Aucun Pokémon trouvé pour '${pokemonName}'.`);
-      }
+      if (print) console.log(`Aucun Pokémon trouvé pour '${pokemonName}'.`);
       return null;
     }
 
-    // Collecter toutes les attaques rapides uniques avec leurs dégâts
     const fastAttacksData = [];
     const fastAttacksMap = new Map();
 
@@ -286,29 +179,22 @@ export class Pokemon {
       }
     }
 
-    // Pour chaque attaque rapide unique
     for (const attack of fastAttacksMap.values()) {
-      // Trouver tous les Pokémons avec cette attaque
       const pokemonsWithAttack = Object.values(Pokemon.all_pokemons).filter(
         (p) => p.attacks.fast.some((a) => a && a.id === attack.id),
       );
 
-      if (pokemonsWithAttack.length === 0) {
-        continue;
-      }
+      if (pokemonsWithAttack.length === 0) continue;
 
-      // Calculer les dégâts moyens
       let totalDamage = 0;
       let totalEffectiveness = 0;
 
       for (const attacker of pokemonsWithAttack) {
-        // Récupérer l'efficacité de l'attaque contre la cible
         const effectiveness = tPokemon.types.reduce((acc, t) => {
-          const eff = Type.all_types[attack.type].effectiveness[t.name] || 1;
+          const eff = Type.all_types[attack.type]?.effectiveness[t.name] || 1;
           return acc * eff;
         }, 1);
 
-        // Calculer les dégâts: Puissance × Efficacité × (ATK attaquant / DEF cible)
         const damage =
           attack.power *
           effectiveness *
@@ -329,11 +215,9 @@ export class Pokemon {
       });
     }
 
-    // Trier par dégâts (descending), puis par nom alphabétique
+    // Tri par dégâts décroissants, puis par nom alphabétique en cas d'égalité
     fastAttacksData.sort((a, b) => {
-      if (b.pts !== a.pts) {
-        return b.pts - a.pts;
-      }
+      if (b.pts !== a.pts) return b.pts - a.pts;
       return a.atk.name.localeCompare(b.atk.name);
     });
 
