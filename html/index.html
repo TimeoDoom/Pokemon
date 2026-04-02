@@ -7,6 +7,11 @@
     <title>Document</title>
   </head>
   <body>
+    <div id="pagination">
+      <button>PRÉC</button>
+      <span></span>
+      <button>SUIV</button>
+    </div>
     <table id="pokeTable">
       <thead>
         <tr>
@@ -14,6 +19,7 @@
           <td>nom</td>
           <td>génération</td>
           <td>types</td>
+          <td>endurance</td>
           <td>points d'attaque de base</td>
           <td>points de défense de base</td>
           <td>image</td>
@@ -23,11 +29,6 @@
         <!-- Chargement des infos dans le JS -->
       </tbody>
     </table>
-    <div id="pagination">
-      <button>PRÉC</button>
-      <span></span>
-      <button>SUIV</button>
-    </div>
 
     <div class="overlay" style="display: none">
       <div class="detailsPopUp">
@@ -51,10 +52,7 @@
       </div>
     </div>
 
-    <div
-      class="imagePopUp"
-      id="imagePopUp"
-    >
+    <div class="imagePopUp" id="imagePopUp">
       <img
         src=""
         alt="pokemon preview"

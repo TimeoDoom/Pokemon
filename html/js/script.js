@@ -31,11 +31,12 @@ $(document).ready(function () {
       const pokemonIdFormatted = String(pokemon.id).padStart(3, "0");
 
       pokemonTableBody.append(`
-        <tr>
+        <tr data-pokemon-id="${pokemon.id}">
             <td>${pokemonIdFormatted}</td>
             <td>${pokemon.name}</td>
             <td>${pokemon.generation}</td>
             <td>${pokemon.types.map((t) => t.name).join(", ")}</td>
+            <td>${pokemon.stats.sta}</td>
             <td>${pokemon.stats.atk}</td>
             <td>${pokemon.stats.def}</td>
             <td><img src="./webp/images/${pokemonIdFormatted}.webp" alt="${pokemon.name}" style="width: 50px; height: 50px;"></td>
@@ -86,17 +87,16 @@ $(document).ready(function () {
   const pokemonAttacks = $(".detailsPopUp .detailsInfos #attks");
 
   $("#pokeTable").on("click", "tbody tr", function () {
-    const pokemonId = $(this).find("td:first").text();
-    const pokemonInfo = Object.values(Pokemon.all_pokemons).find(
-      (p) => String(p.id).padStart(3, "0") === pokemonId,
-    );
+    const pokemonId = $(this).data("pokemon-id");
+    const pokemonInfo = Pokemon.all_pokemons[pokemonId];
 
     if (!pokemonInfo) {
       console.error(`Aucun Pokémon trouvé pour l'ID ${pokemonId}`);
       return;
     }
 
-    pokemonImage.attr("src", `./webp/images/${pokemonId}.webp`);
+    const pokemonIdFormatted = String(pokemonId).padStart(3, "0");
+    pokemonImage.attr("src", `./webp/images/${pokemonIdFormatted}.webp`);
     pokemonName.text(pokemonInfo.name);
     pokemonGeneration.text(pokemonInfo.generation);
     pokemonTypes.text(pokemonInfo.types.map((t) => t.name).join(", "));
@@ -130,8 +130,9 @@ $(document).ready(function () {
   const imagePopUpImg = imagePopUp.find("img");
 
   $("#pokeTable").on("mouseenter", "tbody tr", function () {
-    const pokemonId = $(this).find("td:first").text();
-    const imgSrc = `./webp/images/${pokemonId}.webp`;
+    const pokemonId = $(this).data("pokemon-id");
+    const pokemonIdFormatted = String(pokemonId).padStart(3, "0");
+    const imgSrc = `./webp/images/${pokemonIdFormatted}.webp`;
 
     imagePopUpImg.attr("src", imgSrc);
     imagePopUp.show();
