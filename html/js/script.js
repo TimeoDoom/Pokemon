@@ -19,12 +19,28 @@ $(document).ready(function () {
   const attackInput = $("#fastAttackslist").last();
   const searchInput = $("#searchbar").last();
 
+  const ptsDefBase = $("tr > td:contains('Points de défense de base')").last();
+  const ptsAtcksBase = $('tr > td:contains("Points d\'attaque de base")').last();
+  const endurance = $('tr > td:contains("Endurance")').last();
+  const types = $('tr > td:contains("Types")').last();
+  const generation = $('tr > td:contains("Génération")').last();
+  const nom = $('tr > td:contains("Nom")').last();
+  const identifiant = $('tr > td:contains("Identifiant")').last();
+
   let nameVal = null;
   let typeVal = "all";
   let attackVal = "all";
   let totalPages = 1;
 
-  function displayTablePage(page, typeVal = "all", attackVal = "all", nameVal = "") {
+  let triPtsDefBase = 0;
+  let triPtsAtcksBase = 0;
+  let triEndurance = 0;
+  let triTypes = 0;
+  let triGeneration = 0;
+  let triNom = 0;
+  let triIdentifiant = 0;
+
+  function displayTablePage(page, typeVal = "all", attackVal = "all", nameVal = "", triPtsDefBase = 0, triPtsAtcksBase = 0, triEndurance = 0, triTypes = 0, triGeneration = 0, triNom = 0, triIdentifiant = 0) {
     const pokemonTableBody = $("#pokeTable tbody");
     pokemonTableBody.empty();
     const elemPerPage = 25;
@@ -66,6 +82,75 @@ $(document).ready(function () {
       pagePokemon = pagePokemon.filter((p) => p.name.toLowerCase().startsWith(nameVal.toLowerCase()));
     }
 
+    // tri sur les points de défense de base
+    if(triPtsDefBase == 1) {
+      pagePokemon.sort((p1, p2) => {
+        return p1.stats.def - p2.stats.def;
+      })
+    } else if(triPtsDefBase == 2) {
+      pagePokemon.sort((p1, p2) => {
+        return p2.stats.def - p1.stats.def;
+      })
+    } 
+
+    // tri sur les points d'attaque de base
+    if(triPtsAtcksBase == 1) {
+      pagePokemon.sort((p1, p2) => {
+        return p1.stats.atk - p2.stats.atk;
+      })
+    } else if(triPtsAtcksBase == 2) {
+      pagePokemon.sort((p1, p2) => {
+        return p2.stats.atk - p1.stats.atk;
+      })
+    } 
+  
+    // tri sur l'endurance
+    if(triEndurance == 1) {
+      pagePokemon.sort((p1, p2) => {
+        return p1.stats.sta - p2.stats.sta;
+      })
+    } else if(triEndurance == 2) {
+      pagePokemon.sort((p1, p2) => {
+        return p2.stats.sta - p1.stats.sta;
+      })
+    } 
+
+    // tri sur la génération
+    if(triGeneration == 1) {
+      pagePokemon.sort((p1, p2) => {
+        return p1.generation - p2.generation;
+      })
+    } else if(triGeneration == 2) {
+      pagePokemon.sort((p1, p2) => {
+        return p2.generation - p1.generation;
+      })
+    } 
+
+    // tri sur l'ID
+    if(triIdentifiant == 1) {
+      pagePokemon.sort((p1, p2) => {
+        return p1.id - p2.id;
+      })
+    } else if(triIdentifiant == 2) {
+      pagePokemon.sort((p1, p2) => {
+        return p2.id - p1.id;
+      })
+    } 
+
+    // tri sur le nomm
+    if(triNom == 1) {
+      pagePokemon.sort((p1, p2) => p1.name.localeCompare(p2.name));
+    } else if(triNom == 2) {
+      pagePokemon.sort((p1, p2) => p2.name.localeCompare(p1.name));
+    }
+
+    // tri sur les types
+    if(triTypes == 1) {
+      pagePokemon.sort((p1, p2) => p1.types[0].name.localeCompare(p2.types[0].name));
+    } else if(triTypes == 2) {
+      pagePokemon.sort((p1, p2) => p2.types[0].name.localeCompare(p1.types[0].name));
+    }
+    
     // Calcul du nombre de pages requises
     totalPages = Math.ceil(pagePokemon.length / elemPerPage);
 
@@ -122,7 +207,7 @@ $(document).ready(function () {
   function displayTypeList() {
     const typeList = $("#listType");
     typeList.empty();
-    const all_type = Object.values(Type.all_types).sort();
+    let all_type = Object.values(Type.all_types);
 
     typeList.append(`<option value="all">Tout</option>`);
     all_type.forEach((type) => {
@@ -149,22 +234,155 @@ $(document).ready(function () {
 
   typeInput.on("change", function () {
     typeVal = typeInput.val();
-    console.log("type : " + typeVal);
+    // console.log("type : " + typeVal);
     displayTablePage(currentPage, typeVal, attackVal, nameVal);
   });
 
   attackInput.on("change", function () {
     attackVal = attackInput.val();
-    console.log("Attack : " + attackVal);
+    // console.log("Attack : " + attackVal);
     displayTablePage(currentPage, typeVal, attackVal, nameVal);
   });
 
   searchInput.on("input", function () {
     nameVal = searchInput.val();
-    console.log("search : " + nameVal);
+    // console.log("search : " + nameVal);
     displayTablePage(currentPage, typeVal, attackVal, nameVal);
   });
 
+  ptsDefBase.on("click", function () {
+    switch (triPtsDefBase) {
+      case 0:
+          triPtsDefBase  = 1;
+          ptsDefBase.text("Points de défense de base 🔼");
+        break;
+      case 1:
+          triPtsDefBase  = 2;
+          ptsDefBase.text("Points de défense de base 🔽");
+        break;
+      case 2:
+          triPtsDefBase  = 0;
+          ptsDefBase.text("Points de défense de base");
+        break;
+    }
+    // console.log("Tri triPtsDefBase : " + triPtsDefBase);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+
+  ptsAtcksBase.on("click", function () {
+    switch (triPtsAtcksBase) {
+      case 0:
+          triPtsAtcksBase  = 1;
+          ptsAtcksBase.text("Points d'attaque de base 🔼");
+        break;
+      case 1:
+          triPtsAtcksBase  = 2;
+          ptsAtcksBase.text("Points d'attaque de base 🔽");
+        break;
+      case 2:
+          triPtsAtcksBase  = 0;
+          ptsAtcksBase.text("Points d'attaque de base");
+        break;
+    }
+    console.log("Tri triPtsAtcksBase : " + triPtsAtcksBase);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+
+  endurance.on("click", function () {
+    switch (triEndurance) {
+      case 0:
+          triEndurance  = 1;
+          endurance.text("Endurance 🔼");
+        break;
+      case 1:
+          triEndurance  = 2;
+          endurance.text("Endurance 🔽");
+        break;
+      case 2:
+          triEndurance  = 0;
+          endurance.text("Endurance");
+        break;
+    }
+    console.log("Tri triEndurance : " + triEndurance);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+
+  types.on("click", function () {
+    switch (triTypes) {
+      case 0:
+          triTypes  = 1;
+          types.text("Types 🔼");
+        break;
+      case 1:
+          triTypes  = 2;
+          types.text("Types 🔽");
+        break;
+      case 2:
+          triTypes  = 0;
+          types.text("Types");
+        break;
+    }
+    console.log("Tri types : " + triTypes);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+
+  generation.on("click", function () {
+    switch (triGeneration) {
+      case 0:
+          triGeneration  = 1;
+          generation.text("Génération 🔼");
+        break;
+      case 1:
+          triGeneration  = 2;
+          generation.text("Génération 🔽");
+        break;
+      case 2:
+          triGeneration  = 0;
+          generation.text("Génération");
+        break;
+    }
+    console.log("Tri gen : " + triTypes);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+
+  nom.on("click", function () {
+    switch (triNom) {
+      case 0:
+          triNom  = 1;
+          nom.text("Nom 🔼");
+        break;
+      case 1:
+          triNom  = 2;
+          nom.text("Nom 🔽");
+        break;
+      case 2:
+          triNom  = 0;
+          nom.text("Nom");
+        break;
+    }
+    console.log("Tri nom : " + triTypes);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+
+  identifiant.on("click", function () {
+    switch (triIdentifiant) {
+      case 0:
+          triIdentifiant  = 1;
+          identifiant.text("identifiant 🔼");
+        break;
+      case 1:
+          triIdentifiant  = 2;
+          identifiant.text("identifiant 🔽");
+        break;
+      case 2:
+          triIdentifiant  = 0;
+          identifiant.text("Identifiant");
+        break;
+    }
+    console.log("Tri ID : " + triTypes);
+    displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
+  });
+    
   displayTablePage(1);
   displayTypeList();
   displayFastAttackList();
