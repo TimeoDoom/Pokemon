@@ -12,6 +12,7 @@ $(document).ready(function () {
   let currentPage = 1;
   const allPokemon = Object.values(Pokemon.all_pokemons);
 
+  // Vairables définissant les différents éléments de champs et d'interactions 
   const prevBtn = $("button").first();
   const pageNum = $("#pagination span");
   const nextBtn = $("button").last();
@@ -19,6 +20,7 @@ $(document).ready(function () {
   const attackInput = $("#fastAttackslist").last();
   const searchInput = $("#searchbar").last();
 
+  // Variables définissant les colonnes du tableau
   const ptsDefBase = $("tr > td:contains('Points de défense de base')").last();
   const ptsAtcksBase = $('tr > td:contains("Points d\'attaque de base")').last();
   const endurance = $('tr > td:contains("Endurance")').last();
@@ -27,11 +29,12 @@ $(document).ready(function () {
   const nom = $('tr > td:contains("Nom")').last();
   const identifiant = $('tr > td:contains("Identifiant")').last();
 
+  // Variables définissant la valeur de la recherche associés de chaque attributs
   let nameVal = null;
   let typeVal = "all";
   let attackVal = "all";
-  let totalPages = 1;
 
+  // Variable définissant la valeur du tri de chaque attributs
   let triPtsDefBase = 0;
   let triPtsAtcksBase = 0;
   let triEndurance = 0;
@@ -39,6 +42,8 @@ $(document).ready(function () {
   let triGeneration = 0;
   let triNom = 0;
   let triIdentifiant = 0;
+
+  let totalPages = 1;
 
   function displayTablePage(page, typeVal = "all", attackVal = "all", nameVal = "", triPtsDefBase = 0, triPtsAtcksBase = 0, triEndurance = 0, triTypes = 0, triGeneration = 0, triNom = 0, triIdentifiant = 0) {
     const pokemonTableBody = $("#pokeTable tbody");
@@ -251,135 +256,170 @@ $(document).ready(function () {
   });
 
   ptsDefBase.on("click", function () {
+    // Alterne le tri de la défense de base : croissant, décroissant, puis désactivé.
     switch (triPtsDefBase) {
       case 0:
           triPtsDefBase  = 1;
+          // Tri croissant.
           ptsDefBase.text("Points de défense de base 🔼");
         break;
       case 1:
           triPtsDefBase  = 2;
+          // Tri décroissant.
           ptsDefBase.text("Points de défense de base 🔽");
         break;
       case 2:
           triPtsDefBase  = 0;
+          // Retour à l'état normal, sans tri.
           ptsDefBase.text("Points de défense de base");
         break;
     }
     // console.log("Tri triPtsDefBase : " + triPtsDefBase);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
 
   ptsAtcksBase.on("click", function () {
+    // Alterne le tri de l'attaque de base.
     switch (triPtsAtcksBase) {
       case 0:
           triPtsAtcksBase  = 1;
+          // Tri croissant.
           ptsAtcksBase.text("Points d'attaque de base 🔼");
         break;
       case 1:
           triPtsAtcksBase  = 2;
+          // Tri décroissant.
           ptsAtcksBase.text("Points d'attaque de base 🔽");
         break;
       case 2:
           triPtsAtcksBase  = 0;
+          // Retour à l'état normal, sans tri.
           ptsAtcksBase.text("Points d'attaque de base");
         break;
     }
     console.log("Tri triPtsAtcksBase : " + triPtsAtcksBase);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
 
   endurance.on("click", function () {
+    // Alterne le tri de l'endurance.
     switch (triEndurance) {
       case 0:
           triEndurance  = 1;
+          // Tri croissant.
           endurance.text("Endurance 🔼");
         break;
       case 1:
           triEndurance  = 2;
+          // Tri décroissant.
           endurance.text("Endurance 🔽");
         break;
       case 2:
           triEndurance  = 0;
+          // Retour à l'état normal, sans tri.
           endurance.text("Endurance");
         break;
     }
     console.log("Tri triEndurance : " + triEndurance);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
 
   types.on("click", function () {
+    // Alterne le tri des types.
     switch (triTypes) {
       case 0:
           triTypes  = 1;
+          // Tri croissant.
           types.text("Types 🔼");
         break;
       case 1:
           triTypes  = 2;
+          // Tri décroissant.
           types.text("Types 🔽");
         break;
       case 2:
           triTypes  = 0;
+          // Retour à l'état normal, sans tri.
           types.text("Types");
         break;
     }
     console.log("Tri types : " + triTypes);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
 
   generation.on("click", function () {
+    // Alterne le tri de la génération.
     switch (triGeneration) {
       case 0:
           triGeneration  = 1;
+          // Tri croissant.
           generation.text("Génération 🔼");
         break;
       case 1:
           triGeneration  = 2;
+          // Tri décroissant.
           generation.text("Génération 🔽");
         break;
       case 2:
           triGeneration  = 0;
+          // Retour à l'état normal, sans tri.
           generation.text("Génération");
         break;
     }
     console.log("Tri gen : " + triTypes);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
 
   nom.on("click", function () {
+    // Alterne le tri par nom.
     switch (triNom) {
       case 0:
           triNom  = 1;
+          // Tri croissant.
           nom.text("Nom 🔼");
         break;
       case 1:
           triNom  = 2;
+          // Tri décroissant.
           nom.text("Nom 🔽");
         break;
       case 2:
           triNom  = 0;
+          // Retour à l'état normal, sans tri.
           nom.text("Nom");
         break;
     }
     console.log("Tri nom : " + triTypes);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
 
   identifiant.on("click", function () {
+    // Alterne le tri par identifiant.
     switch (triIdentifiant) {
       case 0:
           triIdentifiant  = 1;
+          // Tri croissant.
           identifiant.text("identifiant 🔼");
         break;
       case 1:
           triIdentifiant  = 2;
+          // Tri décroissant.
           identifiant.text("identifiant 🔽");
         break;
       case 2:
           triIdentifiant  = 0;
+          // Retour à l'état normal, sans tri.
           identifiant.text("Identifiant");
         break;
     }
     console.log("Tri ID : " + triTypes);
+    // Rafraîchit la table avec le nouveau tri.
     displayTablePage(currentPage, typeVal, attackVal, nameVal, triPtsDefBase, triPtsAtcksBase, triEndurance, triTypes, triGeneration, triNom, triIdentifiant);
   });
     
