@@ -1,8 +1,3 @@
-import { Pokemon } from "../data/class_pokemon.js";
-import { Attack } from "../data/class_attack.js";
-import { Type } from "../data/class_type.js";
-import { getPokemonsByType } from "./test.js";
-
 console.log("Tous les Pokemons");
 console.log(Pokemon.all_pokemons);
 console.log("-------------------");
@@ -10,11 +5,11 @@ console.log("Pokemon 1 (Bulbasaur)");
 console.log(Pokemon.all_pokemons[1].toString());
 console.log("-------------------");
 console.log("Pokemons Grass");
-getPokemonsByType("Grass");
+getPokemonsByType('Grass');
 console.log("-------------------");
 console.log("Attaque 210 (Wing Attack)");
 console.log(Attack.all_attacks[210].toString());
 console.log("-------------------");
 console.log("Type Bug");
-console.log(Type.all_types["Bug"].toString());
+console.log(Type.all_types['Bug'].toString());
 console.log("-------------------");

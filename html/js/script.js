@@ -24,7 +24,12 @@ $(document).ready(function () {
   let attackVal = "all";
   let totalPages = 1;
 
-  function displayTablePage(page, typeVal = "all", attackVal = "all", nameVal = "") {
+  function displayTablePage(
+    page,
+    typeVal = "all",
+    attackVal = "all",
+    nameVal = "",
+  ) {
     const pokemonTableBody = $("#pokeTable tbody");
     pokemonTableBody.empty();
     const elemPerPage = 25;
@@ -32,38 +37,40 @@ $(document).ready(function () {
     let pagePokemon = allPokemon.slice();
 
     // Paramétrage recherche par type
-    if(typeVal != "all") {
+    if (typeVal != "all") {
       pagePokemon = pagePokemon.filter((p) => {
-        if(p.types.some((t) => t.name == typeVal)) {
+        if (p.types.some((t) => t.name == typeVal)) {
           return p;
         }
       });
     } else {
       pagePokemon = pagePokemon.filter((p) => {
-        if(p.types.some((t) => t.name.includes(""))) {
+        if (p.types.some((t) => t.name.includes(""))) {
           return p;
         }
       });
     }
 
     // Paramétrage recherche par attaque
-    if(attackVal != "all") {
+    if (attackVal != "all") {
       pagePokemon = pagePokemon.filter((p) => {
-        if(p.attacks.fast.some((t) => t.name == attackVal)) {
+        if (p.attacks.fast.some((t) => t.name == attackVal)) {
           return p;
         }
       });
     } else {
       pagePokemon = pagePokemon.filter((p) => {
-        if(p.types.some((t) => t.name.includes(""))) {
+        if (p.types.some((t) => t.name.includes(""))) {
           return p;
         }
       });
     }
 
     // Paramétrage recherche par nom
-    if(nameVal != null) {
-      pagePokemon = pagePokemon.filter((p) => p.name.toLowerCase().startsWith(nameVal.toLowerCase()));
+    if (nameVal != null) {
+      pagePokemon = pagePokemon.filter((p) =>
+        p.name.toLowerCase().startsWith(nameVal.toLowerCase()),
+      );
     }
 
     // Calcul du nombre de pages requises
@@ -73,7 +80,7 @@ $(document).ready(function () {
     const end = start + elemPerPage;
     pagePokemon = pagePokemon.slice(start, end);
 
-    if(totalPages == 0) {
+    if (totalPages == 0) {
       console.log("Aucun éléments de trouvé");
     }
 
@@ -85,7 +92,7 @@ $(document).ready(function () {
             <td>${pokemonIdFormatted}</td>
             <td>${pokemon.name}</td>
             <td>${pokemon.generation}</td>
-            <td>${pokemon.types.map((t) => t.name).join(", ")}</td>
+            <td>${pokemon.types.map((t) => `<span class="type-${t.name.toLowerCase()}">${t.name}</span>`).join(", ")}</td>
             <td>${pokemon.stats.sta}</td>
             <td>${pokemon.stats.atk}</td>
             <td>${pokemon.stats.def}</td>
@@ -198,7 +205,13 @@ $(document).ready(function () {
     pokemonImage.attr("src", `./webp/images/${pokemonIdFormatted}.webp`);
     pokemonName.text(pokemonInfo.name);
     pokemonGeneration.text(pokemonInfo.generation);
-    pokemonTypes.text(pokemonInfo.types.map((t) => t.name).join(", "));
+    pokemonTypes.html(
+      pokemonInfo.types
+        .map(
+          (t) => `<span class="type-${t.name.toLowerCase()}">${t.name}</span>`,
+        )
+        .join(", "),
+    );
     pokemonAttacksPoints.text(pokemonInfo.stats.atk);
     pokemonDefPoints.text(pokemonInfo.stats.def);
     pokemonAttacks.text(

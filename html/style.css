@@ -1,18 +1,131 @@
 @import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
 
 :root {
-  --screen-bg: #9bbc0f;
-  --screen-dark: #0f380f;
-  --screen-mid: #306230;
-  --pokedex-red: #ee0000;
-  --pokedex-blue: #003da5;
+  --pokedex-red: #ff0000;
+  --pokedex-blue: #0051ba;
   --pokedex-yellow: #ffde00;
   --pokedex-black: #1a1a1a;
+  --pokedex-white: #ffffff;
+  --accent-gold: #daa520;
+  --base-font-size: 17px;
+}
+
+body {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
 }
 
 * {
   font-family: "Pixelify Sans", sans-serif;
   font-weight: 600;
+}
+
+head {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px;
+  background: linear-gradient(
+    135deg,
+    var(--pokedex-red) 0%,
+    var(--pokedex-blue) 100%
+  );
+  border: 6px solid var(--pokedex-black);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+head p {
+  color: var(--pokedex-white);
+  margin: 15px 0;
+  font-size: var(--base-font-size);
+}
+
+button {
+  background: linear-gradient(180deg, var(--pokedex-red) 0%, #cc0000 100%);
+  border: 4px solid var(--pokedex-black);
+  color: var(--pokedex-white);
+  padding: 12px 24px;
+  font-family: "Pixelify Sans", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: var(--base-font-size);
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 var(--pokedex-black);
+  transition: all 0.1s;
+}
+
+button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ff3333 0%, var(--pokedex-red) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--pokedex-black);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--pokedex-black);
+}
+
+button:disabled {
+  background: #888888;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input,
+select {
+  background: var(--pokedex-white);
+  border: 3px solid var(--pokedex-black);
+  padding: 10px 12px;
+  font-family: "Pixelify Sans", sans-serif;
+  color: var(--pokedex-black);
+  font-size: var(--base-font-size);
+  font-weight: 700;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--pokedex-yellow),
+    inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+section {
+  background: linear-gradient(135deg, var(--pokedex-blue) 0%, #003d7a 100%);
+  border: 4px solid var(--pokedex-black);
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+label {
+  color: var(--pokedex-yellow);
+  font-weight: 700;
+  font-size: var(--base-font-size);
+  text-transform: uppercase;
+}
+
+#pagination {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#pagination span {
+  color: var(--pokedex-yellow);
+  font-size: var(--base-font-size);
+  margin: 0 20px;
+  font-weight: 700;
+  background: var(--pokedex-blue);
+  padding: 8px 16px;
+  border: 3px solid var(--pokedex-black);
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .overlay {
@@ -21,54 +134,55 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .detailsPopUp {
-  background: linear-gradient(135deg, var(--pokedex-red) 0%, #b60202 100%);
-  border: 8px solid var(--pokedex-black);
-  border-radius: 20px;
+  border-radius: 0;
   width: 50%;
-  padding: 30px;
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  padding: 0;
   position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--pokedex-red) 0%, #cc0000 100%);
 }
 
 .detailsPopUp h2 {
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: var(--pokedex-yellow);
+  text-shadow: 3px 3px 0 var(--pokedex-black);
   font-family: "Pixelify Sans", sans-serif;
-  font-size: 24px;
+  font-size: var(--base-font-size);
   text-transform: uppercase;
+  margin: 0;
+  padding: 15px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .close {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  filter: brightness(0) invert(1);
+  filter: none;
+  margin-right: 10px;
 }
 
 .close span {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  width: 20px;
+  top: 50%;
+  left: 50%;
+  width: 16px;
   height: 3px;
-  background-color: white;
+  background-color: var(--pokedex-white);
 }
 
 .close span:first-child {
@@ -83,67 +197,169 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  gap: 40px;
+  gap: 20px;
   align-items: center;
-  background: var(--screen-bg);
+  background: linear-gradient(135deg, var(--pokedex-yellow) 0%, #e6c700 100%);
   padding: 20px;
-  border: 4px solid var(--pokedex-black);
-  border-radius: 10px;
+  border-top: 4px solid var(--pokedex-black);
 }
 
 .detailsContent img {
   width: 180px;
   height: 180px;
-  padding: 10px;
+  padding: 12px;
+  border: 4px solid var(--pokedex-black);
+  background: var(--pokedex-white);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.detailsInfos {
+  flex: 1;
+  color: var(--pokedex-black);
+}
+
+.detailsInfos p {
+  margin: 10px 0;
+  font-size: var(--base-font-size);
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+.detailsInfos span {
+  color: var(--pokedex-blue);
 }
 
 .imagePopUp {
   display: none;
   position: fixed;
   top: 50%;
-  right: 0%;
-  transform: translate(-50%, -50%);
-  background: var(--screen-bg);
+  right: 50px;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, var(--pokedex-yellow) 0%, #e6c700 100%);
   border: 6px solid var(--pokedex-black);
-  padding: 20px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 0;
   z-index: 100;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
 }
 
 /* Tableau Pokédex */
 table {
   width: 60%;
+  margin: 0 0 0 20px;
   border-collapse: collapse;
-  border: 4px solid var(--pokedex-black);
-  background: var(--screen-bg);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: 5px solid var(--pokedex-black);
+  background: var(--pokedex-white);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
 }
 
 table td,
 table th {
-  border: 2px solid var(--pokedex-black);
+  border: 3px solid var(--pokedex-black);
   padding: 12px;
   font-family: "Pixelify Sans", monospace;
+  font-size: var(--base-font-size);
 }
 
 table th {
-  background: var(--pokedex-blue);
+  background: linear-gradient(180deg, var(--pokedex-blue) 0%, #003d7a 100%);
   color: var(--pokedex-yellow);
   text-transform: uppercase;
   font-weight: 700;
+  text-shadow: 2px 2px 0 var(--pokedex-black);
 }
 
 tbody tr {
-  background: var(--screen-bg);
-  color: var(--screen-dark);
+  background: var(--pokedex-white);
+  color: var(--pokedex-black);
+  transition: all 0.2s;
 }
 
 tbody tr:nth-child(even) {
-  background: #8bac0f;
+  background: #f5f5f5;
 }
 
 tbody tr:hover {
-  background: #b8d40f;
+  background: linear-gradient(90deg, var(--pokedex-blue) 0%, #0051ba 100%);
+  color: var(--pokedex-yellow);
+}
+
+tbody tr:hover td {
+  border-color: var(--pokedex-yellow);
+}
+
+/* Couleurs des types Pokemon */
+.type-normal {
+  color: #a8a878;
+  font-weight: 700;
+}
+.type-fire {
+  color: #f08030;
+  font-weight: 700;
+}
+.type-water {
+  color: #6890f0;
+  font-weight: 700;
+}
+.type-electric {
+  color: #f8d030;
+  font-weight: 700;
+}
+.type-grass {
+  color: #78c850;
+  font-weight: 700;
+}
+.type-ice {
+  color: #98d8d8;
+  font-weight: 700;
+}
+.type-fighting {
+  color: #c03028;
+  font-weight: 700;
+}
+.type-poison {
+  color: #a040a0;
+  font-weight: 700;
+}
+.type-ground {
+  color: #e0c068;
+  font-weight: 700;
+}
+.type-flying {
+  color: #a8a8e8;
+  font-weight: 700;
+}
+.type-psychic {
+  color: #f85888;
+  font-weight: 700;
+}
+.type-bug {
+  color: #a8b820;
+  font-weight: 700;
+}
+.type-rock {
+  color: #b8a038;
+  font-weight: 700;
+}
+.type-ghost {
+  color: #705898;
+  font-weight: 700;
+}
+.type-dragon {
+  color: #7038f8;
+  font-weight: 700;
+}
+.type-dark {
+  color: #705848;
+  font-weight: 700;
+}
+.type-steel {
+  color: #b8b8d0;
+  font-weight: 700;
+}
+.type-fairy {
+  color: #ee99ac;
+  font-weight: 700;
 }
 
 @media screen and (max-width: 768px) {
