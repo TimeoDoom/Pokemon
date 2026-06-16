@@ -1,4 +1,4 @@
-export const fast_moves =
+const fast_moves =
     [
         {
             "duration": 400,

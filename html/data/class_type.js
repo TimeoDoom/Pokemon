@@ -1,6 +1,4 @@
-import { type_effectiveness } from "./type_effectiveness.js";
-
-export class Type {
+class Type {
   static all_types = {};
 
   constructor(name, effectiveness) {

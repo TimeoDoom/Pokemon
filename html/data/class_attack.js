@@ -1,9 +1,5 @@
-// Importation des données requises
-import { fast_moves } from "./fast_moves.js";
-import { charged_moves } from "./charged_moves.js";
-
 // Création de la classe Attacks repertoriant toutes les attaques des Pokémons
-export class Attack {
+class Attack {
 
   // Index de toutes les attaques, accessible par move_id.
   // Objet qui va stocker la totalité des attaques sous formes d'objet indexés sur l'id de l'attaque

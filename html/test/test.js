@@ -1,7 +1,3 @@
-import { Type } from "../data/class_type.js";
-import { Attack } from "../data/class_attack.js";
-import { Pokemon } from "../data/class_pokemon.js";
-
 Type.fill_types();
 Attack.fill_attacks();
 Pokemon.fill_pokemons();
@@ -231,12 +227,4 @@ console.log("Q7. fastFight('Bulbasaur', 'Charizard')");
 console.log("═".repeat(60));
 fastFight("Bulbasaur", "Charizard");
 
-// Export des fonctions
-export {
-  getPokemonsByType,
-  getPokemonsByAttack,
-  getAttacksByType,
-  sortPokemonsByTypeThenName,
-  getPokemonByName,
-  fastFight,
-};
+

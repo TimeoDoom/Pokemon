@@ -1,4 +1,4 @@
-export const pokemon_types =
+const pokemon_types =
     [
         {
             "form": "Fall_2019",

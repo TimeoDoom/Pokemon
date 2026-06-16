@@ -1,4 +1,4 @@
-export const pokemon_moves = [
+const pokemon_moves = [
   {
     charged_moves: ["Sludge Bomb", "Seed Bomb", "Power Whip"],
     elite_charged_moves: [],

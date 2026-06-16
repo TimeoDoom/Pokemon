@@ -1,4 +1,4 @@
-export const type_effectiveness =
+const type_effectiveness =
 {
     "Bug": {
         "Bug": 1.0,

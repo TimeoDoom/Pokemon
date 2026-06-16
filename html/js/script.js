@@ -1,7 +1,3 @@
-import { Type } from "../data/class_type.js";
-import { Attack } from "../data/class_attack.js";
-import { Pokemon } from "../data/class_pokemon.js";
-
 // Vérification du bon chargement du DOM
 $(document).ready(function () {
   // Charger les données

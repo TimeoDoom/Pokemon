@@ -1,10 +1,4 @@
-import { Type } from "./class_type.js";
-import { Attack } from "./class_attack.js";
-import { pokemon_data } from "./pokemons.js";
-import { pokemon_moves } from "./pokemon_moves.js";
-import { pokemon_types } from "./pokemon_types.js";
-
-export class Pokemon {
+class Pokemon {
   static all_pokemons = {};
 
   constructor(id, name, types, attacks, stats, generation) {

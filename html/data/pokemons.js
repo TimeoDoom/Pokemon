@@ -1,4 +1,4 @@
-export const pokemon_data =
+const pokemon_data =
     [
         {
             "base_attack": 118,
